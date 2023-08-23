@@ -15,7 +15,8 @@ def login(request):
     return render(request, 'login.html', {})
 
 def docprofile(request):
-    return render(request, 'docprofile.html', {})
+    medicos = Medico.objects.all()
+    return render(request, 'docprofile.html', {'medicos': medicos})
 
 def userprofile(request):
     return render(request, 'userprofile.html', {})
