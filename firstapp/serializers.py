@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
-from .models import Especialidad, Medico
+from .models import Especialidad, Medico, Review
 
 class MedicoSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Medico
         fields = (
@@ -11,5 +12,5 @@ class MedicoSerializer(serializers.ModelSerializer):
             'surname', 
             'especialidad', 
             'date_added', 
-            'rating'
+            'average_rating'
         )

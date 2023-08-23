@@ -2,4 +2,13 @@
 
 {% block content %}
 <h1>Doc profile</h1>
+<table>
+{% for medico in medicos %}
+<tr>
+    <td>{{ medico.surname }}</td>
+    <td>{{ medico.name }}</td>
+    <td>{{ medico.average_rating }}</td>
+</tr>
+{% endfor %}
+</table>
 {% endblock content %}
