@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('surname', models.CharField(max_length=255)),
                 ('date_added', models.DateTimeField(auto_now_add=True)),
-                ('especialidad', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='firstapp.especialidad')),
+                ('especialidad', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medico.especialidad')),
             ],
             options={
                 'ordering': ['-date_added'],

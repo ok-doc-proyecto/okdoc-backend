@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('firstapp', '0004_alter_medico_especialidad_alter_review_medico'),
+        ('medico', '0004_alter_medico_especialidad_alter_review_medico'),
     ]
 
     operations = [

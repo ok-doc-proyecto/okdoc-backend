@@ -40,8 +40,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+    'django_rename_app',
 
-    'firstapp'
+    'medico'
 ]
 
 CORS_ALLOWED_ORIGINS = [

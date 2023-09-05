@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('firstapp', '0002_medico_rating'),
+        ('medico', '0002_medico_rating'),
     ]
 
     operations = [
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('score', models.PositiveSmallIntegerField(choices=[(1, 'Muy malo'), (2, 'Malo'), (3, 'Regular'), (4, 'Bueno'), (5, 'Muy bueno')])),
                 ('review', models.TextField()),
-                ('medico', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='firstapp.medico')),
+                ('medico', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medico.medico')),
             ],
         ),
     ]
