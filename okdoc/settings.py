@@ -40,7 +40,6 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
-    'django_rename_app',
 
     'medico'
 ]
