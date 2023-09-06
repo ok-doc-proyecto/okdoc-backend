@@ -17,17 +17,24 @@ class Medico(models.Model):
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255)
     especialidad = models.ForeignKey(Especialidad, related_name='medicos', on_delete=models.CASCADE)
+    rating = models.DecimalField(max_digits=3, decimal_places=2, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
-    @property
-    def average_rating(self):
-        return self.reviews.aggregate(Avg('score'))['score__avg']
+    def get_rating(self):
+        if self.reviews != None:
+            return self.reviews.aggregate(Avg('score'))['score__avg']
+        else:
+            return None
     
     class Meta:
         ordering = ['-date_added']
 
     def __str__(self):
         return ' '.join([self.name, self.surname])
+    
+    def save(self, *args, **kwargs):
+        self.rating = self.get_rating()
+        super(Medico, self).save(*args, **kwargs)
     
 
 class Review(models.Model):
@@ -41,3 +48,9 @@ class Review(models.Model):
     score = models.PositiveSmallIntegerField(choices=ScoreOptions.choices)
     review = models.TextField()
     medico = models.ForeignKey(Medico, related_name='reviews', on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        super(Review, self).save(*args, **kwargs)
+        medico_obj = self.medico
+        medico_obj.rating = medico_obj.get_rating()
+        medico_obj.save()
