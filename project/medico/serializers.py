@@ -11,15 +11,8 @@ class EspecialidadSerializer(serializers.ModelSerializer):
 
 
 class MedicoSerializer(serializers.ModelSerializer):
-    especialidad = EspecialidadSerializer()
+    especialidad = serializers.ReadOnlyField(source='especialidad.especialidad')
 
     class Meta:
         model = Medico
-        fields = (
-            'id', 
-            'name', 
-            'surname', 
-            'especialidad', 
-            'date_added', 
-            'average_rating'
-        )
+        fields = '__all__'
