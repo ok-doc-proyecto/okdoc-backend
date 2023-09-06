@@ -35,7 +35,15 @@ class Medico(models.Model):
     def save(self, *args, **kwargs):
         self.rating = self.get_rating()
         super(Medico, self).save(*args, **kwargs)
-    
+
+
+class RelMedicoEspecialidad(models.Model):
+    especialidad = models.ForeignKey(Especialidad, related_name='especialidades', on_delete=models.CASCADE)
+    medico = models.ForeignKey(Medico, related_name='medicos', on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['especialidad', 'medico']
+        verbose_name_plural = 'Relaciones Medico-Especialidad'
 
 class Review(models.Model):
     class ScoreOptions(models.IntegerChoices):
