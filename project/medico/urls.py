@@ -7,4 +7,5 @@ urlpatterns = [
     path('docprofile/', views.docprofile, name='docprofile'), 
     path('userprofile/', views.userprofile, name='userprofile'), 
     path('all-docs/', views.AllDocsList.as_view()),
+    path('search/', views.Search.as_view(), name='search'),
 ]

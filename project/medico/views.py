@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+from rest_framework import filters
 from rest_framework.response import Response
 
 from .models import Medico
@@ -26,3 +28,9 @@ class AllDocsList(APIView):
         medicos = Medico.objects.all()
         serializer = MedicoSerializer(medicos, many=True)
         return Response(serializer.data)
+    
+class Search(ListAPIView):
+    serializer_class = MedicoSerializer
+    queryset = Medico.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['^especialidad__especialidad', '^name', '^surname']
