@@ -32,5 +32,6 @@ class AllDocsList(APIView):
 class Search(ListAPIView):
     serializer_class = MedicoSerializer
     queryset = Medico.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    ordering_fields = ['rating']
     search_fields = ['^especialidad__especialidad', '^name', '^surname']
