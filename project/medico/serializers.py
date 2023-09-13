@@ -16,3 +16,11 @@ class MedicoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medico
         fields = '__all__'
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    medico = serializers.ReadOnlyField(source='medico.surname')
+
+    class Meta:
+        model = Review
+        fields = '__all__'
