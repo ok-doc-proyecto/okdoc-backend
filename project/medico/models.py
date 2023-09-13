@@ -40,6 +40,7 @@ class Medico(models.Model):
 class RelMedicoEspecialidad(models.Model):
     especialidad = models.ForeignKey(Especialidad, related_name='especialidades', on_delete=models.CASCADE)
     medico = models.ForeignKey(Medico, related_name='medicos', on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['especialidad', 'medico']
@@ -53,10 +54,12 @@ class Review(models.Model):
         BUENO = 4, 'Bueno'
         MUY_BUENO = 5, 'Muy bueno'
 
-    score = models.PositiveSmallIntegerField(choices=ScoreOptions.choices)
-    review = models.TextField()
-    medico = models.ForeignKey(Medico, related_name='reviews', on_delete=models.CASCADE)
-
+    score        = models.PositiveSmallIntegerField(choices=ScoreOptions.choices)
+    review       = models.TextField()
+    medico       = models.ForeignKey(Medico, related_name='reviews', on_delete=models.CASCADE)
+    especialidad = models.ForeignKey(Especialidad, related_name='especialidad_Review', on_delete=models.CASCADE)
+    date_added   = models.DateTimeField(auto_now_add=True)
+    
     def save(self, *args, **kwargs):
         super(Review, self).save(*args, **kwargs)
         medico_obj = self.medico
