@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-from rest_framework import filters
+from rest_framework import viewsets, mixins, filters
 from rest_framework.response import Response
 
 from .models import Medico, Review
@@ -10,8 +10,8 @@ from .serializers import MedicoSerializer, ReviewSerializer
 
 
 # Create your views here.
-def home(request):
-    return render(request, 'home.html', {})
+# def home(request):
+#     return render(request, 'home.html', {})
 
 def login(request):
     return render(request, 'login.html', {})
@@ -23,11 +23,19 @@ def docprofile(request):
 def userprofile(request):
     return render(request, 'userprofile.html', {})
 
-class AllDocsList(APIView):
+class AllDocsList_(APIView):
     def get(self, request, format=None):
         medicos = Medico.objects.all()
         serializer = MedicoSerializer(medicos, many=True)
         return Response(serializer.data)
+
+class AllDocsList(viewsets.GenericViewSet, mixins.ListModelMixin):
+    serializer_class = MedicoSerializer
+    queryset = Medico.objects.all()
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    ordering_fields = ['rating']
+    search_fields = ['^especialidad__especialidad', '^name', '^surname']
+    
     
 class Search(ListAPIView):
     serializer_class = MedicoSerializer
