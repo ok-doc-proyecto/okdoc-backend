@@ -19,6 +19,7 @@ especialidades_csv = os.path.join(dir_name, 'especialidades.csv')
 
 with open(especialidades_csv, 'w', newline='', encoding='utf-8') as f:
     writer = csv.DictWriter(f, fieldnames=sample_especialidades[0].keys())
+    writer.writeheader()
     writer.writerows(sample_especialidades)
 
 
@@ -32,19 +33,21 @@ obras_csv = os.path.join(dir_name, 'obras_sociales.csv')
 
 with open(obras_csv, 'w', newline='', encoding='utf-8') as f:
     writer = csv.DictWriter(f, fieldnames=sample_prepagas[0].keys())
+    writer.writeheader()
     writer.writerows(sample_prepagas)
 
 
 ### Dummy data para médicos ###
 sample_medicos = []
 for _ in range(50):
-    medico = {'name': fake.first_name(), 'surname': fake.last_name(), 'date_added': fake.date(), 'rating': None}
+    medico = {'name': fake.first_name(), 'surname': fake.last_name(), 'date_added': fake.date(), 'rating': 0.00}
     sample_medicos.append(medico)
 
 medicos_csv = os.path.join(dir_name, 'medicos.csv')
 
 with open(medicos_csv, 'w', newline='', encoding='utf-8') as f:
     writer = csv.DictWriter(f, fieldnames=sample_medicos[0].keys())
+    writer.writeheader()
     writer.writerows(sample_medicos)
 
 
@@ -53,6 +56,7 @@ reviews_csv = os.path.join(dir_name, 'reviews.csv')
 
 with open(reviews_csv, 'w', newline='') as file:
     csvwriter = csv.writer(file)
+    csvwriter.writerow(['score', 'review', 'medico_id', 'date_added'])
 
     for i in range(1001):
         score = random.randint(1, 5)
@@ -67,6 +71,7 @@ relmedicoespecialidad_csv = os.path.join(dir_name, 'rel_medico_especialidad.csv'
 
 with open(relmedicoespecialidad_csv, 'w', newline='') as file:
     csvwriter = csv.writer(file)
+    csvwriter.writerow(['especialidad_id', 'medico_id'])
     
     # Se asegura de asignar al menos una especialidad por médico
     for medico in range(1, len(sample_medicos)+1):
@@ -85,6 +90,7 @@ relmedicoobrasocial_csv = os.path.join(dir_name, 'rel_medico_obra_social.csv')
 
 with open(relmedicoobrasocial_csv, 'w', newline='') as file:
     csvwriter = csv.writer(file)
+    csvwriter.writerow(['obra_social_id', 'medico_id'])
     
     # Se asegura de asignar al menos una obra social por médico
     for medico in range(1, len(sample_medicos)+1):
@@ -101,7 +107,9 @@ with open(relmedicoobrasocial_csv, 'w', newline='') as file:
 ### BORRA TODOS LOS DATOS en la database, mete los dummy data y borra los csv ###
 
 os.system('python ../project/manage.py flush')
-#os.system('sqlite3 ../project/db.sqlite3 ".read import_dummy.sql"')
+
+### La línea de abajo lo importa directamente desde sql, pero no pasa por la validación de django ###
+# os.system('sqlite3 ../project/db.sqlite3 ".read import_dummy.sql"')
 # os.remove(especialidades_csv)
 # os.remove(obras_csv)
 # os.remove(medicos_csv)
