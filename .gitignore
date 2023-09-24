@@ -1,6 +1,9 @@
 # Virtual environments
 venv/
 
+#VS Code
+**/.vscode/*
+
 # Cached py files
 **/__pycache__/*
 
