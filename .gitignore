@@ -1,6 +1,13 @@
 # Virtual environments
 .venv/
 venv/
+<<<<<<< HEAD
+=======
+
+#VS Code
+**/.vscode/*
+
+>>>>>>> desarrolloBackend/master
 # Cached py files
 **/__pycache__/*
 

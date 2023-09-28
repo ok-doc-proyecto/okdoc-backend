@@ -112,6 +112,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Custom users
+# https://docs.djangoproject.com/en/4.2/topics/auth/customizing/
+
+AUTH_USER_MODEL = 'medico.Usuario'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
