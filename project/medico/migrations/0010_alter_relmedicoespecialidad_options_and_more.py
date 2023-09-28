@@ -7,9 +7,9 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('medico', '0009_relmedicoespecialidad'),
-    ]
+#    dependencies = [
+#        ('medico', '0009_relmedicoespecialidad'),
+#   ]
 
     operations = [
         migrations.AlterModelOptions(
