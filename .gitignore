@@ -8,6 +8,10 @@ venv
 vscode
 .vscode
 
+#Scripts
+makeVenv.ps1
+
+
 >>>>>>> desarrolloBackend/master
 # Cached py files
 **/__pycache__/*
