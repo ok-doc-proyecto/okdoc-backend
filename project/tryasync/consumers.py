@@ -10,6 +10,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 class WSconsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
+        w_aux = self.channel_layer
         for i in range(9):
             await self.send(json.dumps({'message':i*10}))
 #           await self.send(json.dumps({'message':randint(1,100)}))

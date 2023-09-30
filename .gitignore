@@ -1,11 +1,12 @@
 # Virtual environments
-.venv/
-venv/
+.venv
+venv
 <<<<<<< HEAD
 =======
 
 #VS Code
-**/.vscode/*
+vscode
+.vscode
 
 >>>>>>> desarrolloBackend/master
 # Cached py files
