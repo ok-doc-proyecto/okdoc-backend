@@ -27,8 +27,7 @@ class AllDocsList(APIView):
     def get(self, request, format=None):
         medicos = Medico.objects.all()
         serializer = MedicoSerializer(medicos, many=True)
-        response = Response(serializer.data)
-        return 
+        return Response(serializer.data)
     
 class Search(ListAPIView):
     serializer_class = MedicoSerializer
