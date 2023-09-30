@@ -24,7 +24,10 @@
       socket.onmessage = function (event) {
         var data = JSON.parse(event.data);
         console.log(data);
-        document.querySelector("#app").innerText = data.message;
+        var acum = document.querySelector("#app").innerText;
+        var acum2 = data.message;
+        var acum3 = acum + "/" + acum2;
+        document.querySelector("#app").innerText = acum3;
       };
     </script>
   </body>
