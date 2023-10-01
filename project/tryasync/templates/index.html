@@ -20,7 +20,8 @@
       </div>
     </div>
     <script>
-      var socket = new WebSocket("ws://localhost:7000/ws/async/");
+      let url = "ws://localhost:7000/ws/async/";
+      var socket = new WebSocket(url);
       socket.onmessage = function (event) {
         var data = JSON.parse(event.data);
         console.log(data);
