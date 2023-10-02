@@ -29,12 +29,15 @@ class AllDocsList_(APIView):
         serializer = MedicoSerializer(medicos, many=True)
         return Response(serializer.data)
 
-class AllDocsList(viewsets.GenericViewSet, mixins.ListModelMixin):
+class AllDocs(viewsets.GenericViewSet, mixins.ListModelMixin):
+    """
+    HOLA
+    """
     serializer_class = MedicoSerializer
     queryset = Medico.objects.all()
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['rating']
-    search_fields = ['^especialidad__especialidad', '^name', '^surname']
+    search_fields = ['^especialidades__especialidad', '^prepagas__prepaga', '^first_name', '^last_name']
     
     
 class Search(ListAPIView):
@@ -63,3 +66,21 @@ class DocReviewList(ListAPIView):
             score = self.kwargs['score']
             return Review.objects.filter(medico=medico_id, score=score)
         return Review.objects.filter(medico=medico_id)
+
+class DocReviews(viewsets.ReadOnlyModelViewSet):
+    serializer_class = ReviewSerializer
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['score']
+    ordering_fields = ['date_added']
+    ordering = ['-date_added']
+
+    def get_queryset(self, *args, **kwargs):
+        medico_id = self.kwargs['medico_id']
+        queryset = Review.objects.filter(medico=medico_id)
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(serializer.data)
