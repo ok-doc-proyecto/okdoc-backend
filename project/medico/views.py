@@ -41,7 +41,7 @@ class AllDocs(viewsets.GenericViewSet, mixins.ListModelMixin):
     ordering_fields = ['rating']
     search_fields = ['^especialidades__especialidad', '^prepagas__prepaga', 
                         '^first_name', '^last_name']
-    
+
     
 class Search(ListAPIView):
     serializer_class = MedicoSerializer

@@ -1,11 +1,20 @@
 # Virtual environments
-venv/
+.venv
+venv
+<<<<<<< HEAD
+=======
 
 #VS Code
-**/.vscode/*
+vscode
+.vscode
 
+#Scripts
+makeVenv.ps1
+
+
+>>>>>>> desarrolloBackend/master
 # Cached py files
 **/__pycache__/*
 
 # Django database
-db.sqlite3
+./project/db.sqlite3
