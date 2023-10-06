@@ -31,13 +31,16 @@ class AllDocsList_(APIView):
 
 class AllDocs(viewsets.GenericViewSet, mixins.ListModelMixin):
     """
-    HOLA
+    Endpoint que devuelve una lista de médicos. Por default devuelve todos, 
+    se puede hacer search pro especialidad, prepaga, nombre o apellido. 
+    Admite ordenarlos por rating ascendente o descendente.
     """
     serializer_class = MedicoSerializer
     queryset = Medico.objects.all()
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['rating']
-    search_fields = ['^especialidades__especialidad', '^prepagas__prepaga', '^first_name', '^last_name']
+    search_fields = ['^especialidades__especialidad', '^prepagas__prepaga', 
+                        '^first_name', '^last_name']
     
     
 class Search(ListAPIView):
@@ -67,7 +70,11 @@ class DocReviewList(ListAPIView):
             return Review.objects.filter(medico=medico_id, score=score)
         return Review.objects.filter(medico=medico_id)
 
-class DocReviews(viewsets.ReadOnlyModelViewSet):
+class DocReviews(viewsets.GenericViewSet,mixins.ListModelMixin):
+    """
+    Endpoint que devuelve todos los reviews de un médico, indicado por id.
+    Las reviews se pueden ordenar por fecha y filtrar por score.
+    """
     serializer_class = ReviewSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['score']

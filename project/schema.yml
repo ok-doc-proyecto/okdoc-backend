@@ -1,0 +1,310 @@
+openapi: 3.0.3
+info:
+  title: okdoc
+  version: 0.0.0
+paths:
+  /api/all-docs/:
+    get:
+      operationId: api_all_docs_list
+      description: |-
+        Endpoint que devuelve una lista de médicos. Por default devuelve todos,
+        se puede hacer search pro especialidad, prepaga, nombre o apellido.
+        Admite ordenarlos por rating ascendente o descendente.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Medico'
+          description: ''
+  /api/doc-reviews/{medico_id}/:
+    get:
+      operationId: api_doc_reviews_list
+      description: |-
+        Endpoint que devuelve todos los reviews de un médico, indicado por id.
+        Las reviews se pueden ordenar por fecha y filtrar por score.
+      parameters:
+      - in: path
+        name: medico_id
+        schema:
+          type: string
+          pattern: ^[\d]+$
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+          description: ''
+  /api/schema:
+    get:
+      operationId: api_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    Medico:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        especialidades:
+          type: array
+          items:
+            type: string
+        prepagas:
+          type: array
+          items:
+            type: string
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
+        date_added:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_added
+      - especialidades
+      - first_name
+      - id
+      - last_name
+      - prepagas
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        medico:
+          type: string
+          readOnly: true
+        score:
+          $ref: '#/components/schemas/ScoreEnum'
+        review:
+          type: string
+        date_added:
+          type: string
+          format: date-time
+          readOnly: true
+        usuario:
+          type: integer
+      required:
+      - date_added
+      - id
+      - medico
+      - review
+      - score
+      - usuario
+    ScoreEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      type: integer
+      description: |-
+        * `1` - Muy malo
+        * `2` - Malo
+        * `3` - Regular
+        * `4` - Bueno
+        * `5` - Muy bueno
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
