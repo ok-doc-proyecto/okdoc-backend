@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,14 +39,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # External packages
     'rest_framework',
+    'channels',
     'corsheaders',
+    'drf_spectacular',
 
-    'medico'
+    # Interal Apps
+    'medico',
+    'tryasync'
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8888',
+    'http://localhost:7000',
     'http://localhost:5173',
+    'ws://localhost:7000',
 ]
 
 MIDDLEWARE = [
@@ -78,7 +87,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'okdoc.wsgi.application'
-
+ASGI_APPLICATION = 'okdoc.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -109,6 +118,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Custom users
+# https://docs.djangoproject.com/en/4.2/topics/auth/customizing/
+
+AUTH_USER_MODEL = 'medico.Usuario'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -131,3 +144,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'okdoc'
+}

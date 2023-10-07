@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Especialidad, Medico, Review
+from .models import Especialidad, Prepaga, Medico, Review
 
 
 class EspecialidadSerializer(serializers.ModelSerializer):
@@ -10,16 +10,25 @@ class EspecialidadSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PrepagaSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Prepaga
+        fields = '__all__'
+
+
 class MedicoSerializer(serializers.ModelSerializer):
-    especialidad = EspecialidadSerializer()
+    especialidades = serializers.StringRelatedField(many=True)
+    prepagas = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Medico
-        fields = (
-            'id', 
-            'name', 
-            'surname', 
-            'especialidad', 
-            'date_added', 
-            'average_rating'
-        )
+        fields = '__all__'
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    medico = serializers.ReadOnlyField(source='medico.last_name')
+
+    class Meta:
+        model = Review
+        fields = '__all__'

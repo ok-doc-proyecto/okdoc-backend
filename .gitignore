@@ -1,8 +1,25 @@
 # Virtual environments
+<<<<<<< HEAD
 .venv/
 venv/
 
 
+=======
+.venv
+venv
+<<<<<<< HEAD
+=======
+
+#VS Code
+vscode
+.vscode
+
+#Scripts
+makeVenv.ps1
+
+
+>>>>>>> desarrolloBackend/master
+>>>>>>> aff6e322bc3feba2575cd522cc24cbdea17e985a
 # Cached py files
 **/__pycache__/*
 
