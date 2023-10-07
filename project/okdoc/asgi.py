@@ -18,7 +18,6 @@ import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'okdoc.settings')
 
-
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),
     'websocket': AuthMiddlewareStack(URLRouter(tryasync_urlpatterns +

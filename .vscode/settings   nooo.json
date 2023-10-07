@@ -1,0 +1,13 @@
+{
+  "python.envFile": "${workspaceFolder/.venv}",
+  "python.terminal.activateEnvironment": true,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "db_sqlite",
+      "group": "pruebas",
+      "database": "${workspaceFolder:backend-forkrm-branch1}/project/db.sqlite3"
+    }
+  ]
+}

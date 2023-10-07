@@ -5,8 +5,8 @@ venv
 =======
 
 #VS Code
-vscode
-.vscode
+#vscode
+#.vscode
 
 #Scripts
 makeVenv.ps1
