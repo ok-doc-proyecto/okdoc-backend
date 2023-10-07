@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "daphne",
+    #    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
 
     # Interal Apps
     'medico',
-    'tryasync'
+    'tryasync',
+    'functionServices'
 ]
 
 CORS_ALLOWED_ORIGINS = [
