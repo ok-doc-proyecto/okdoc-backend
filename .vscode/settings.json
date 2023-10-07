@@ -1,4 +1,5 @@
 {
   "python.envFile": "${workspaceFolder}",
-  "python.terminal.activateEnvironment": true
+  "python.terminal.activateEnvironment": true,
+  "git.ignoreLimitWarning": true
 }

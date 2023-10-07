@@ -5,13 +5,40 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Django",
+      "name": "Iniciar app",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:7000/ws/async/",
+      "webRoot": "${workspaceFolder/chats/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "Iniciar Servidor desarrollo",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}\\project\\manage.py",
+      "envFile": "${workspaceFolder/.venv}",
+      "program": "${workspaceFolder}\\manage.py",
       "args": ["runserver", "7000"],
       "django": true,
-      "justMyCode": true
+      "justMyCode": false
+    },
+    {
+      "name": "Iniciar Hypercorn",
+      "type": "python",
+      "request": "launch",
+      "envFile": "${workspaceFolder/.venv}",
+      "module": "hypercorn",
+      "args": [
+        "project/okdoc.asgi:application",
+        "--reload",
+        "--bind",
+        "localhost:7000"
+      ],
+      "django": true,
+      "justMyCode": false
     }
   ]
 }
