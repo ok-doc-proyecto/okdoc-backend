@@ -74,8 +74,10 @@ class DocReviewList(ListAPIView):
 
         if 'score' in self.kwargs:
             score = self.kwargs['score']
-            return Review.objects.filter(medico=medico_id, score=score)
-        return Review.objects.filter(medico=medico_id)
+            w_salida = Review.objects.filter(medico=medico_id, score=score)
+        else:
+            w_salida = Review.objects.filter(medico=medico_id)
+        return w_salida
 
 
 class DocReviews(viewsets.GenericViewSet, mixins.ListModelMixin):
@@ -97,5 +99,7 @@ class DocReviews(viewsets.GenericViewSet, mixins.ListModelMixin):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
+        w_data = serializer.data
+        w_response = Response(serializer.data)
 
-        return Response(serializer.data)
+        return w_response

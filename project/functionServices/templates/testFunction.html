@@ -22,12 +22,20 @@
     <script>
       let url = "ws://localhost:7000/ws/async/";
       var socket = new WebSocket(url);
+      // podemos modificar toda la atencion del siguiente evento con una funcion separada llamada .. "funcionPrueba" (o como sea)
+      // y llamarla asi:
+      //      socket.onmessage = function (event) {
+      //      var data = JSON.parse(event.data);
+      //      funcionPrueba(socket,data);
+      // dia 0:  que haga lo mismo que hoy
+      //
+
       socket.onmessage = function (event) {
         var data = JSON.parse(event.data);
         console.log(data);
         var acum = document.querySelector("#app").innerText;
         var acum2 = data.message;
-        var acum3 = acum + "/" + acum2;
+        var acum3 = acum + "/*/" + acum2;
         document.querySelector("#app").innerText = acum3;
         var xjson = {
           numero: data.message,

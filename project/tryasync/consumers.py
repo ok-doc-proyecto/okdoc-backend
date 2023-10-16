@@ -60,6 +60,7 @@ class WSconsumer(AsyncWebsocketConsumer):
         username = text_data_json['username']
         self.counter += 1
         if self.counter < 15:
+            await asyncio.sleep(1)
             await self.send(json.dumps({'message': (1000)}))
             await self.send(json.dumps({'message': (nro + 1)}))
         else:
