@@ -4,14 +4,19 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets, mixins, filters
 from rest_framework.response import Response
-
 from .models import Medico, Review
 from .serializers import MedicoSerializer, ReviewSerializer
+from django.http import JsonResponse
+from asgiref.sync import async_to_sync
+
+import asyncio
+from django.utils.decorators import classonlymethod
 
 
 # Create your views here.
 # def home(request):
 #     return render(request, 'home.html', {})
+
 
 def login(request):
     return render(request, 'login.html', {})
@@ -91,15 +96,44 @@ class DocReviews(viewsets.GenericViewSet, mixins.ListModelMixin):
     ordering_fields = ['date_added']
     ordering = ['-date_added']
 
-    def get_queryset(self, *args, **kwargs):
-        medico_id = self.kwargs['medico_id']
-        queryset = Review.objects.filter(medico=medico_id)
+    @classmethod
+    def x_get_queryset(cls, p_medico):
+        """ permite obtener el queryset que usa el view  """
+        queryset = Review.objects.filter(medico__exact=p_medico)
         return queryset
 
-    def list(self, request, *args, **kwargs):
+    @classmethod
+    async def asyncProviderDocReviews(*args, **kwargs):
+        queryset = DocReviews.x_get_queryset(kwargs["medico_id"])
+        data = [review async for review in queryset.values()]
+        return data
+
+    def get_queryset(self, *args, **kwargs):
+        medico_id = self.kwargs['medico_id']
+        queryset = self.x_get_queryset(medico_id)
+        return queryset
+
+    def list_orginal(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         w_data = serializer.data
-        w_response = Response(serializer.data)
+        w_response = Response(w_data)
+        return w_response
+
+    def list(self, request, *args, **kwargs):
+        w_data = async_to_sync(
+            DocReviews.asyncProviderDocReviews)(*args, **kwargs)
+        w_response = Response(w_data)
+        return w_response
+
+    @classmethod
+    async def asyncDocReviews(request, *args, **kwargs):
+        data = await DocReviews.asyncProviderDocReviews(*args, **kwargs)
+        w_response = JsonResponse(data, safe=False)
+ #      w_response = Response(data)
+ #      w_response.accepted_media_type = 'text/html'
+ #      w_response.accepted_renderer=BrowsableAPIRenderer
+ #      w_response.renderer=BrowsableAPIRenderer
+ #      w_response.context =
 
         return w_response

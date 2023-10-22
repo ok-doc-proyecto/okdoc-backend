@@ -55,7 +55,29 @@
       }
     },
     {
-      "name": "Launch Edge construida a mano",
+      "name": "Launch asyncReviews 22",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/api/ws/asyncReviews2/1/",
+      "webRoot": "${workspaceFolder/project/medico/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "Launch asyncReviews",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/ws/asyncReviews/1/",
+      "webRoot": "${workspaceFolder/project/tryasync/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "Launch async",
       "request": "launch",
       "type": "msedge",
       "url": "http://localhost:7000/ws/async/",
