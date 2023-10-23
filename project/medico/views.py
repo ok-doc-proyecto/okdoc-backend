@@ -96,8 +96,7 @@ class DocReviews(viewsets.GenericViewSet, mixins.ListModelMixin):
     ordering_fields = ['date_added']
     ordering = ['-date_added']
 
-    @classmethod
-    def x_get_queryset(cls, p_medico):
+    def x_get_queryset_noseusamas(cls, p_medico):
         """ permite obtener el queryset que usa el view  """
 
         # TODO acoplar los filtros que proporciona la VIEW
@@ -105,15 +104,9 @@ class DocReviews(viewsets.GenericViewSet, mixins.ListModelMixin):
 
         return queryset
 
-    @classmethod
-    async def asyncProviderDocReviews(*args, **kwargs):
-        queryset = DocReviews.x_get_queryset(kwargs["medico_id"])
-        data = [review async for review in queryset.values()]
-        return data
-
     def get_queryset(self, *args, **kwargs):
         medico_id = self.kwargs['medico_id']
-        queryset = self.x_get_queryset(medico_id)
+        queryset = Review.objects.filter(medico=medico_id)
         return queryset
 
     def list(self, request, *args, **kwargs):
@@ -129,16 +122,27 @@ class DocReviews(viewsets.GenericViewSet, mixins.ListModelMixin):
 #       w_response = Response(w_data)
 #       return w_response
 
+    async def asyncProviderDocReviews(self, *args, **kwargs):
+        queryset0 = self.get_queryset()
+        queryset = self.filter_queryset(queryset0)
+
+        data = [review async for review in queryset.values()]
+        return data
+
     @classmethod
     async def asyncDocReviews(request, *args, **kwargs):
         """ This function is a POC of the convertion of a VIEW CLASS from sync to async.
             The criterias were:
                 version de POC para convertir una VIEW en asyncronica .
               """
- #      view_instance = DocReviews()
- #      view_instance.setup(request, *args, **kwargs)
+        view_instance = DocReviews()
+        view_instance.setup(request, *args, **kwargs)
+#        xx = DocReviews.as_view({'get': 'list'})
 
-        data = await DocReviews.asyncProviderDocReviews(*args, **kwargs)
+
+#        yy = xx(request, *args, **kwargs)
+
+        data = await view_instance.asyncProviderDocReviews(*args, **kwargs)
         w_response = JsonResponse(data, safe=False)
 
  #      w_response = Response(data)
