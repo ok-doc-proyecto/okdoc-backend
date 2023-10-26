@@ -6,11 +6,11 @@ from . import views
 router = routers.DefaultRouter()
 router.register('all-docs', views.AllDocs, 'all-docs')
 router.register(
-    'doc-reviews/(?P<medico_id>[\d]+)', views.DocReviews, 'doc-reviews')
+    'doc-reviews/(?P<medico_id>[\d]+)', views.DocReviews, 'doc-reviewsxx')
 
 urlpatterns = [
     path('ws/asyncReviews2/<int:medico_id>/',
-         views.DocReviews.asyncDocReviews, name='asyncDocReviews'),
+         views.DocReviews.aList, name='xasyncDocReviews'),
 ]
 
 

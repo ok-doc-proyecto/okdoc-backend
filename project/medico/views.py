@@ -6,8 +6,10 @@ from rest_framework import viewsets, mixins, filters
 from rest_framework.response import Response
 from .models import Medico, Review
 from .serializers import MedicoSerializer, ReviewSerializer
-from django.http import JsonResponse
-from asgiref.sync import async_to_sync
+from django.http import JsonResponse, HttpRequest, QueryDict
+from rest_framework.renderers import BrowsableAPIRenderer
+
+from asgiref.sync import async_to_sync, sync_to_async
 
 import asyncio
 from django.utils.decorators import classonlymethod
@@ -96,14 +98,6 @@ class DocReviews(viewsets.GenericViewSet, mixins.ListModelMixin):
     ordering_fields = ['date_added']
     ordering = ['-date_added']
 
-    def x_get_queryset_noseusamas(cls, p_medico):
-        """ permite obtener el queryset que usa el view  """
-
-        # TODO acoplar los filtros que proporciona la VIEW
-        queryset = Review.objects.filter(medico__exact=p_medico)
-
-        return queryset
-
     def get_queryset(self, *args, **kwargs):
         medico_id = self.kwargs['medico_id']
         queryset = Review.objects.filter(medico=medico_id)
@@ -116,63 +110,28 @@ class DocReviews(viewsets.GenericViewSet, mixins.ListModelMixin):
         w_response = Response(w_data)
         return w_response
 
-#   def list(self, request, *args, **kwargs):
-#       w_data = async_to_sync(
-#           DocReviews.asyncProviderDocReviews)(*args, **kwargs)
-#       w_response = Response(w_data)
-#       return w_response
-
-    async def asyncProviderDocReviews(self, *args, **kwargs):
-        queryset0 = self.get_queryset()
-        queryset = self.filter_queryset(queryset0)
-
-        data = [review async for review in queryset.values()]
-        return data
+    async def asyncData(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        w_data = [review async for review in queryset.values()]
+        return w_data
 
     @classmethod
-    async def asyncDocReviews(request, *args, **kwargs):
+    async def aList(cls, request, *args, **kwargs):
         """ This function is a POC of the convertion of a VIEW CLASS from sync to async.
-            The criterias were:
-                version de POC para convertir una VIEW en asyncronica .
-              """
+            as of 2023/10/26 The Django support for async CBV seems to be incomplete  
+            "AList" is a classmethod to be called as a FBV.
+            It's aimed to get the same set definition as the sync version, wich is calles as a CBV
+            It was rapidly tested. 
+            The only rendered that worked was the used by JsonResponse.
+            May be other renderes can be used, but decided not to dedicate more time now
+        """
+# TODO Hacer una prueba de carga y simultaneidad de la version async
+# TODO Hacer una prueba y comparar los datos devueltos por ambas
+
+        request.query_params = QueryDict('', encoding=request._encoding)
         view_instance = DocReviews()
         view_instance.setup(request, *args, **kwargs)
-#        xx = DocReviews.as_view({'get': 'list'})
-
-
-#        yy = xx(request, *args, **kwargs)
-
-        data = await view_instance.asyncProviderDocReviews(*args, **kwargs)
-        w_response = JsonResponse(data, safe=False)
-
- #      w_response = Response(data)
- #      w_response.accepted_media_type = 'text/html'
- #      w_response.accepted_renderer=BrowsableAPIRenderer
- #      w_response.renderer=BrowsableAPIRenderer
- #      w_response.context =
-
+        view_instance.format_kwarg = None
+        w_data = await view_instance.asyncData(request, *args, **kwargs)
+        w_response = JsonResponse(w_data, safe=False)
         return w_response
-
-
-# el original borrar despues
-# class DocReviews(viewsets.GenericViewSet,mixins.ListModelMixin):
-#    """
-#   Endpoint que devuelve todos los reviews de un médico, indicado por id.
-#   Las reviews se pueden ordenar por fecha y filtrar por score.
-#   """
-#   serializer_class = ReviewSerializer
-#    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-#    search_fields = ['score']
-#    ordering_fields = ['date_added']
-#    ordering = ['-date_added']
-#
-#    def get_queryset(self, *args, **kwargs):
-#        medico_id = self.kwargs['medico_id']
-#        queryset = Review.objects.filter(medico=medico_id)
-#        return queryset
-#
-#    def list(self, request, *args, **kwargs):
-#        queryset = self.filter_queryset(self.get_queryset())
-#        serializer = self.get_serializer(queryset, many=True)#
-#
-#        return Response(serializer.data)

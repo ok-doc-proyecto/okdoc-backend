@@ -5,14 +5,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Edge construida automaticamente",
+      "name": "Iniciar Hypercorn",
+      "type": "python",
       "request": "launch",
-      "type": "msedge",
-      "url": "http://localhost:8080",
-      "webRoot": "${workspaceFolder}"
+      "envFile": "${workspaceFolder/.venv}",
+      "module": "hypercorn",
+      "args": [
+        "project/okdoc.asgi:application",
+        "--bind",
+        "localhost:7000",
+        "--reload"
+      ],
+      "django": true,
+      "justMyCode": false
     },
     {
-      "name": "Edge api/all-docs/",
+      "name": "a0- api/all-docs/",
       "request": "launch",
       "type": "msedge",
       "url": "http://localhost:7000/api/all-docs/",
@@ -23,7 +31,7 @@
       }
     },
     {
-      "name": "Edge api/reviews/",
+      "name": "a1- Consulta de reviews por medico",
       "request": "launch",
       "type": "msedge",
       "url": "http://localhost:7000/api/doc-reviews/1/",
@@ -33,6 +41,19 @@
         "*": "${webRoot}/*"
       }
     },
+
+    {
+      "name": "a2-Reviews en modo async",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/api/ws/asyncReviews2/1/",
+      "webRoot": "${workspaceFolder/project/medico/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
+
     {
       "name": "Edge schema",
       "request": "launch",
@@ -44,7 +65,6 @@
         "*": "${webRoot}/*"
       }
     },
-
     {
       "type": "vscode-edge-devtools.debug",
       "name": "Open Edge DevTools",
@@ -54,28 +74,7 @@
         "hidden": true
       }
     },
-    {
-      "name": "Launch asyncReviews 22",
-      "request": "launch",
-      "type": "msedge",
-      "url": "http://localhost:7000/api/ws/asyncReviews2/1/",
-      "webRoot": "${workspaceFolder/project/medico/templates/}",
-      "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "*": "${webRoot}/*"
-      }
-    },
-    {
-      "name": "Launch asyncReviews",
-      "request": "launch",
-      "type": "msedge",
-      "url": "http://localhost:7000/ws/asyncReviews/1/",
-      "webRoot": "${workspaceFolder/project/tryasync/templates/}",
-      "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "*": "${webRoot}/*"
-      }
-    },
+
     {
       "name": "Launch async",
       "request": "launch",
@@ -94,21 +93,6 @@
       "envFile": "${workspaceFolder/.venv}",
       "program": "${workspaceFolder}\\manage.py",
       "args": ["runserver", "7000"],
-      "django": true,
-      "justMyCode": false
-    },
-    {
-      "name": "Iniciar Hypercorn",
-      "type": "python",
-      "request": "launch",
-      "envFile": "${workspaceFolder/.venv}",
-      "module": "hypercorn",
-      "args": [
-        "project/okdoc.asgi:application",
-        "--bind",
-        "localhost:7000",
-        "--reload"
-      ],
       "django": true,
       "justMyCode": false
     },
