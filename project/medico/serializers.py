@@ -1,7 +1,11 @@
 from rest_framework import serializers
 
-from .models import Especialidad, Prepaga, Medico, Review
+from .models import Especialidad, Prepaga, Medico, Review, Usuario
 
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
 
 class EspecialidadSerializer(serializers.ModelSerializer):
     

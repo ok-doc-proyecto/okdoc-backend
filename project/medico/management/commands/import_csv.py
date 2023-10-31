@@ -32,6 +32,9 @@ class Command(BaseCommand):
             elif options['model'] == 'usuario':
                 for row in csvreader:
                     obj = model.objects.create(email=row[0], first_name=row[1], last_name=row[2], date_birth=row[3], date_added=row[4])
+                    password = model.objects.make_random_password()
+                    obj.set_password(password)
+                    obj.save()
 
                     prepagas = ast.literal_eval(row[5])
                     for prepaga_name in prepagas:

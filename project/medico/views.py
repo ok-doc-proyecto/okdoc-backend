@@ -1,27 +1,38 @@
 from django.shortcuts import render
 
+from django.contrib.auth import authenticate, login
+from rest_framework.authtoken.models import Token
+
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-from rest_framework import viewsets, mixins, filters
+from rest_framework import status, viewsets, mixins, filters
 from rest_framework.response import Response
 
+from drf_spectacular.utils import extend_schema
+
 from .models import Medico, Review
-from .serializers import MedicoSerializer, ReviewSerializer
+from .serializers import MedicoSerializer, ReviewSerializer, LoginSerializer
 
 
-# Create your views here.
-# def home(request):
-#     return render(request, 'home.html', {})
+class LoginView(APIView):
+    @extend_schema(request=LoginSerializer, responses=LoginSerializer)
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
 
-def login(request):
-    return render(request, 'login.html', {})
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
 
-def docprofile(request):
-    medicos = Medico.objects.all()
-    return render(request, 'docprofile.html', {'medicos': medicos})
+            user = authenticate(request, email=email, password=password)
 
-def userprofile(request):
-    return render(request, 'userprofile.html', {})
+            if user is not None:
+                login(request, user)
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key})
+            else:
+                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AllDocsList_(APIView):
     def get(self, request, format=None):
