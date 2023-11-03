@@ -5,7 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Iniciar Hypercorn",
+      "name": "00-Iniciar Servidor desarrollo",
+      "type": "python",
+      "request": "launch",
+      "envFile": "${workspaceFolder/.venv}",
+      "program": "${workspaceFolder}\\project\\manage.py",
+      "args": ["runserver", "7000"],
+      "django": true,
+      "justMyCode": false
+    },
+    {
+      "name": "00-Iniciar Hypercorn",
       "type": "python",
       "request": "launch",
       "envFile": "${workspaceFolder/.venv}",
@@ -15,6 +25,7 @@
         "--bind",
         "localhost:7000",
         "--reload"
+        //TODO : Ver porque no toma el reload
       ],
       "django": true,
       "justMyCode": false
@@ -41,7 +52,17 @@
         "*": "${webRoot}/*"
       }
     },
-
+    {
+      "name": "a1- Consulta de reviews por medico reorganicada",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/api/doc-reviewsReorg/1/",
+      "webRoot": "${workspaceFolder/project/tryasync/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
     {
       "name": "a2-Reviews en modo async",
       "request": "launch",
@@ -53,7 +74,57 @@
         "*": "${webRoot}/*"
       }
     },
+    {
+      "name": "a2-Reviews en modo async reorg",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/api/ws/asyncReviews3/1/",
+      "webRoot": "${workspaceFolder/project/medico/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "a3-Login",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/usuarios/login_user/",
+      "webRoot": "${workspaceFolder/project/usuarios/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "a3-Login en medico",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/usuarios/login_user/",
+      "webRoot": "${workspaceFolder/project/usuarios/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "a3-LoginClass",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/usuarios/login/",
+      "webRoot": "${workspaceFolder/project/usuarios/templates/}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    },
 
+    {
+      "name": "a4-Admin",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:7000/admin/"
+    },
     {
       "name": "Edge schema",
       "request": "launch",
@@ -86,16 +157,7 @@
         "*": "${webRoot}/*"
       }
     },
-    {
-      "name": "Iniciar Servidor desarrollo",
-      "type": "python",
-      "request": "launch",
-      "envFile": "${workspaceFolder/.venv}",
-      "program": "${workspaceFolder}\\manage.py",
-      "args": ["runserver", "7000"],
-      "django": true,
-      "justMyCode": false
-    },
+
     {
       "type": "msedge",
       "name": "Launch Microsoft Edge",
