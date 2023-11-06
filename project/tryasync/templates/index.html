@@ -19,17 +19,7 @@
         </div>
       </div>
     </div>
-    <script>
-      let url = "ws://localhost:7000/ws/async/";
-      var socket = new WebSocket(url);
-      socket.onmessage = function (event) {
-        var data = JSON.parse(event.data);
-        console.log(data);
-        var acum = document.querySelector("#app").innerText;
-        var acum2 = data.message;
-        var acum3 = acum + "/" + acum2;
-        document.querySelector("#app").innerText = acum3;
-      };
-    </script>
+    {% load static %}
+    <script src="{% static 'index.js' %}"></script>
   </body>
 </html>
